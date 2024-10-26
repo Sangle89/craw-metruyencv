@@ -1,0 +1,41 @@
+{
+  "name": "phantomjs-example",
+  "version": "1.0.0",
+  "title": "PhantomJS Example",
+  "description": "PhantomJS Example",
+  "keywords": [
+    "phantom example"
+  ],
+  "main": "./index.js",
+  "scripts": {
+    "inst": "rm -rf node_modules && rm package-lock.json && npm install",
+    "start-server": "nodemon --exec node_modules/.bin/babel-node server.js",
+    "get-list": "node process/get_list.js",
+    "save-data": "node --max-old-space-size=8192 --optimize-for-size  --max_old_space_size=8192 --optimize_for_size process/save_data.js",
+    "convert": "node process/convert.js",
+    "push": "node process/push_data.js",
+    "clean-data": "node process/clean_data.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "detect-file-encoding-and-language": "^2.4.0",
+    "express": "^4.21.0",
+    "jsdom": "^25.0.0",
+    "multer": "^1.4.5-lts.1",
+    "node-tesseract-ocr": "^2.2.1",
+    "phantom": "^6.3.0",
+    "request": "^2.88.2",
+    "selenium-webdriver": "^4.24.0",
+    "slugify": "^1.6.6",
+    "tesseract.js": "^5.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.25.6",
+    "@babel/core": "^7.25.2",
+    "@babel/node": "^7.25.0",
+    "@babel/preset-env": "^7.25.4",
+    "nodemon": "^3.1.4"
+  }
+}

@@ -1,0 +1,6 @@
+source/*/*
+node_modules/*
+logs/*
+last_index.txt
+last_page.txt
+last_book.txt
