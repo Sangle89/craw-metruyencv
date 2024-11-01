@@ -1,6 +1,39 @@
 var fs = require("fs");
 const { fetchWithRetry } = require("../lib/utils");
-const { CRAWLER_HOST } = require("../lib/config");
+const { CRAWLER_HOST, TARGET_HOST } = require("../lib/config");
+
+async function saveBook(book_slug, book, chapters) {
+  const rpHtml = await fetch(TARGET_HOST + "/truyen/" + book_slug, [], 2);
+  var html;
+
+  if (rpHtml && rpHtml.status == 200) {
+    html = await rpHtml.text();
+  }
+
+  try {
+    const result = await fetchWithRetry(
+      CRAWLER_HOST + "/api/v2/metruyencv/save-book",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          book,
+          html,
+          chapters,
+        }),
+      },
+      3
+    );
+
+    return result;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
 
 async function saveChapter(currentBookInfo, chapter) {
   const lstChapterLink = JSON.parse(
@@ -72,6 +105,13 @@ async function saveChapter(currentBookInfo, chapter) {
         encoding: "utf-8",
       })
     );
+
+    const newChapters = rawChapters.map((item) => ({
+      ...item,
+      ready: true,
+    }));
+
+    await saveBook(book_slug, currentBookInfo, newChapters);
 
     while (j < chapters.length) {
       const chapter_slug = chapters[j];
